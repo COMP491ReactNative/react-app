@@ -14,16 +14,23 @@ import {getFunName} from '../helpers';
  */
 
 class StorePicker extends React.Component {
-	constructor() {
-		super();
-		this.goToStore = this.goToStore.bind(this)
-	}
+    // We can also use the constructor to bind the goToStore
+    // event to the StorePicker class
+	// constructor() {
+	// 	super();
+	// 	this.goToStore = this.goToStore.bind(this)
+	// }
 	goToStore(event) {
 		//https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
 		event.preventDefault(); //prevents reloading
 		console.log("You have changed the url");
 		// get text from the store input box
-		console.log(this.storeInput.value);
+		const storeId = this.storeInput.value;
+        console.log(`Going to ${storeId}`);
+        // transition from storepicket to the store
+        // url changes to '/' to '/store/:storeId'
+        // where storeId is storeInput.value
+        this.context.router.transitionTo(`/store/${storeId}`);
 	}
 	render() {
 		return(
@@ -37,6 +44,10 @@ class StorePicker extends React.Component {
 			</form>
 		)
 	}
+}
+
+StorePicker.contextTypes = {
+    router: React.PropTypes.object
 }
 
 export default StorePicker;
