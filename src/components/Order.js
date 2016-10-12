@@ -3,7 +3,11 @@ import React from 'react';
 class Order extends React.Component {
     render() {
         return (
-            <p>Order</p>
+        	<header className="top">
+        		<h1>
+        			Order
+        		</h1>
+        	</header>
         )
     }
 }
