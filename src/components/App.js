@@ -11,6 +11,7 @@ class App extends React.Component {
 		// bind the addFish method to this class
 		this.addFish = this.addFish.bind(this);
 		this.loadSamples = this.loadSamples.bind(this);
+		this.addToOrder = this.addToOrder.bind(this);
 		// in the initial state
 		// the fishes state is gonna be empty
 		// getInitialState in the normal JavaScript. (this is ES6)
@@ -39,6 +40,16 @@ class App extends React.Component {
 			fishes: sampleFishes
 		})
 	}
+
+	addToOrder(key) {
+		// get a copy of the order state
+		const order = {...this.state.order};
+		// update order so new orders are added up
+		order[key] = order[key] + 1 || 1;
+		// update the state
+		this.setState({ order });
+	}
+
 	// whenver we put {} in JSx it means we are
 	// telling react.js that we are going to be using
 	// JavaScript over here.
@@ -51,8 +62,10 @@ class App extends React.Component {
 						{
 							Object
 								.keys(this.state.fishes)
-								.map(key => <Fish key={key} details={this
-									.state.fishes[key]}/>)
+								.map(key => <Fish key={key} index={key} details={this
+									.state.fishes[key]} addToOrder={
+										this.addToOrder
+								}/>)
 						}
 					</ul>
 				</div>
