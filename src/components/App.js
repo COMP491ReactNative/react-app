@@ -26,6 +26,7 @@ class App extends React.Component {
 	 invoked immediately before mounting occurs.
 	 It is called before render(), therefore setting state
 	  in this method will not trigger a re-rendering.
+	 right before app gets rendered
 	 */
 	componentWillMount() {
 		// getting storeId from react-router
@@ -36,10 +37,28 @@ class App extends React.Component {
 				context: this,
 				state: 'fishes'
 			});
+		// check if there is any order in localStorage
+		const localStorageRef = localStorage.getItem(`order-${this.props.params.storeId}`);
+
+		if(localStorageRef){
+			//update our app component order state
+			this.setState({
+				order: JSON.parse(localStorageRef)
+			});
+		}
 	}
 
 	componentWillUnmount() {
 		base.removeBinding(this.ref);
+	}
+
+	/**
+	 * Runs whenever props or state changes.
+	 * Using to localStore order state.
+	 */
+	componentWillUpdate(nextProps, nextState) {
+		localStorage.setItem(`order-${this.props.params.storeId}`,
+			JSON.stringify(nextState.order));
 	}
 
 	addFish(fish){
@@ -90,7 +109,11 @@ class App extends React.Component {
 						}
 					</ul>
 				</div>
-				<Order fishes={this.state.fishes} order={this.state.order}/>
+				<Order
+					fishes={this.state.fishes}
+					order={this.state.order}
+					params={this.props.params}
+				/>
 				<Inventory addFish={this.addFish} loadSamples={this.loadSamples}/>
 			</div>
 		)
