@@ -4,6 +4,7 @@ import Order from './Order';
 import Inventory from './Inventory';
 import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
+import base from '../base';
 
 class App extends React.Component {
 	constructor() {
@@ -19,6 +20,26 @@ class App extends React.Component {
 			fishes: {},
 			order: {}
 		};
+	}
+
+	/*
+	 invoked immediately before mounting occurs.
+	 It is called before render(), therefore setting state
+	  in this method will not trigger a re-rendering.
+	 */
+	componentWillMount() {
+		// getting storeId from react-router
+		// it is inside params which is a props of App component
+		// the ref is to reference it later during un-mounting
+		this.ref = base.syncState(`${this.props.params.storeId}/fishes`,
+			{
+				context: this,
+				state: 'fishes'
+			});
+	}
+
+	componentWillUnmount() {
+		base.removeBinding(this.ref);
 	}
 
 	addFish(fish){
