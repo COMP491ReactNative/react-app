@@ -12,8 +12,10 @@ class App extends React.Component {
 		// bind the addFish method to this class
 		this.addFish = this.addFish.bind(this);
 		this.updateFish = this.updateFish.bind(this);
+		this.removeFish = this.removeFish.bind(this)
 		this.loadSamples = this.loadSamples.bind(this);
 		this.addToOrder = this.addToOrder.bind(this);
+		this.removeFromOrder = this.removeFromOrder.bind(this);
 		// in the initial state
 		// the fishes state is gonna be empty
 		// getInitialState in the normal JavaScript. (this is ES6)
@@ -82,6 +84,12 @@ class App extends React.Component {
 		this.setState({ fishes });
 	}
 
+	removeFish(key) {
+		const fishes = {...this.state.fishes};
+		fishes[key] = null;
+		this.setState({ fishes });
+	}
+
 	loadSamples() {
 		this.setState({
 			fishes: sampleFishes
@@ -94,6 +102,12 @@ class App extends React.Component {
 		// update order so new orders are added up
 		order[key] = order[key] + 1 || 1;
 		// update the state
+		this.setState({ order });
+	}
+
+	removeFromOrder(key){
+		const  order = {...this.state.order};
+		delete order[key];
 		this.setState({ order });
 	}
 
@@ -120,12 +134,14 @@ class App extends React.Component {
 					fishes={this.state.fishes}
 					order={this.state.order}
 					params={this.props.params}
+					removeFromOrder={this.removeFromOrder}
 				/>
 				<Inventory
 					addFish={this.addFish}
 					loadSamples={this.loadSamples}
 					fishes={this.state.fishes}
 					updateFish={this.updateFish}
+					removeFish={this.removeFish}
 				/>
 			</div>
 		)
